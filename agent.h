@@ -105,7 +105,15 @@ class weight_agent : public agent {
         uint32_t size;
         in.read(reinterpret_cast<char*>(&size), sizeof(size));
         net.resize(size);
-        for (weight& w : net) in >> w;
+        for (weight& w : net) {
+            in >> w;
+            for( auto &v : w.value){
+                if( v != 0.0f){
+                    std::cout<<v<<" ";
+                }
+            }
+            std::cout<<std::endl;
+        }
         in.close();
         std::cout<<"load weights from "<<path<<std::endl;
     }
@@ -115,7 +123,9 @@ class weight_agent : public agent {
         if (!out.is_open()) std::exit(-1);
         uint32_t size = net.size();
         out.write(reinterpret_cast<char*>(&size), sizeof(size));
-        for (weight& w : net) out << w;
+        for (weight& w : net) {
+            out << w;
+        }
         out.close();
         std::cout<<"save weights to "<<path<<std::endl;
     }
@@ -193,15 +203,10 @@ class tdl_slider : public weight_agent {
 
     void update_episode() {
         float exact = 0;
-		// std::cout<<"enter agent update episode"<<std::endl;
         for (state_path.pop_back(); state_path.size(); state_path.pop_back()) {
-			// std::cout<<state_path.size()<<std::endl;
             state& move = state_path.back();
             float error = exact - (move.value - move.reward);
-            // std::cout<<error<<std::endl;
             exact = move.reward + update(move.after, alpha * error);
-			// cant reach
-			// std::cout<<"finish update: "<<exact<<std::endl;
         }
         state_path.clear();
     }

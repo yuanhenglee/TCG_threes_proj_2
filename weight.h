@@ -82,6 +82,7 @@ public:
 	}
 
 	friend std::ostream& operator <<(std::ostream& out, const weight& w) {
+
 		auto& value = w.value;
 		uint64_t size = value.size();
 		out.write(reinterpret_cast<const char*>(&size), sizeof(uint64_t));
@@ -137,7 +138,8 @@ private:
 		return std::vector<int>();
 	}
 
-protected:
+// protected:
+public:
 	std::vector<type> value;
 	std::vector<int> pattern;
 	std::vector<std::vector<int>> isomorphism;
