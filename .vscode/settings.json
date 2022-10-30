@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.rmd": "markdown",
+        "unordered_map": "cpp",
+        "*.tcc": "cpp"
+    }
+}
