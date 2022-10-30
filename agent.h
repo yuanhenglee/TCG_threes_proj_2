@@ -107,12 +107,6 @@ class weight_agent : public agent {
         net.resize(size);
         for (weight& w : net) {
             in >> w;
-            for( auto &v : w.value){
-                if( v != 0.0f){
-                    std::cout<<v<<" ";
-                }
-            }
-            std::cout<<std::endl;
         }
         in.close();
         std::cout<<"load weights from "<<path<<std::endl;
@@ -144,7 +138,10 @@ class tdl_slider : public weight_agent {
         : weight_agent("name=tdl role=player " + args), opcode({0, 1, 2, 3}) {
         state_path.reserve(20000000);
         if (meta.find("init") != meta.end()) init_weights(meta["init"]);
-        if (meta.find("load") != meta.end()) load_weights(meta["load"]);
+        if (meta.find("load") != meta.end()){
+            init_weights(meta["init"]);
+            load_weights(meta["load"]);
+        }
         if (meta.find("alpha") != meta.end()) alpha = float(meta["alpha"]);
     }
 
