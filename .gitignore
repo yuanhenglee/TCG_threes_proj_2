@@ -1,5 +1,5 @@
 *.bin
-
+*.tar.gz
 .DS_Store
 states.txt
 *.zip
