@@ -158,32 +158,25 @@ class tdl_slider : public weight_agent {
         std::vector<board::reward> after_rewards;
 
         int best_op_idx = -1;
-		board::reward best_reward = -1;
+		board::reward best_reward = std::numeric_limits<int>::min();
         for ( size_t op_idx = 0 ; op_idx < opcode.size(); op_idx++) {
 			int op = opcode[op_idx];
 			after_boards.emplace_back(board(before));
             board::reward reward = after_boards[op_idx].slide(op);
-            board::reward est_reward;
 
             after_rewards.emplace_back(reward);
 
-            //keep unavailable moves -1
-            if( reward != -1 ) {
-                est_reward = estimate(after_boards[op_idx]);
-                //TODO: check if this is correct
-                // if( est_reward > 0 )
-                //     std::cout<<"est_reward: "<<est_reward<<std::endl;
-            }
-            else {
-                est_reward = -1;
-            }
+            //ignore unavailable moves
+            if( reward == -1 ) continue;
 
-            if ( reward + est_reward > best_reward) {
-                best_reward = reward + est_reward;
+            board::reward value = reward + estimate(after_boards[op_idx]);
+
+            if ( value > best_reward) {
+                best_reward = value;
                 best_op_idx = op_idx;
             }
         }
-        if ( best_reward != -1 ) {
+        if ( best_op_idx != -1 ) {
 			state cur_state = {};
             cur_state.before = before;
             cur_state.after = after_boards[best_op_idx];

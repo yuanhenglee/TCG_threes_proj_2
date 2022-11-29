@@ -1,4 +1,4 @@
-alpha=0.025
+alpha=0.001
 
 for i in {1..100}; do
 	./threes --total=100000 --block=10000 --limit=1000 --slide="load=weights.bin save=weights.bin alpha=${alpha}" | tee -a train.log

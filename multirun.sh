@@ -1,3 +1,3 @@
-for i in {1...120}; do
+for i in {1...5000}; do
     ./train.sh >> multirun_log.txt
 done
