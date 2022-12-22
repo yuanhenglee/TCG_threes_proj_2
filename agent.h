@@ -136,7 +136,6 @@ class tdl_slider : public weight_agent {
    public:
     tdl_slider(const std::string& args = "")
         : weight_agent("name=tdl role=player " + args), opcode({0, 1, 2, 3}) {
-        state_path.reserve(20000000);
         if (meta.find("init") != meta.end()) init_weights(meta["init"]);
         if (meta.find("load") != meta.end()){
             init_weights(meta["init"]);
